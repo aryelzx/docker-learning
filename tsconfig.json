@@ -1,5 +1,5 @@
 {
-  "files": [],
+  "files": ["src/components/ui/table/**/*.ts"],
   "references": [
     {
       "path": "./tsconfig.node.json"
