@@ -17,6 +17,7 @@ type User = {
   age: number
   company: string
   status: string
+  id: number
 }
 
 const props = defineProps({
