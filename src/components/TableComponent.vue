@@ -1,16 +1,14 @@
 <script setup lang="ts">
+import UserForm from '@/components/UserForm.vue'
 import { Button } from '@/components/ui/button'
 import {
   Dialog,
   DialogContent,
   DialogDescription,
-  DialogFooter,
   DialogHeader,
   DialogTitle,
   DialogTrigger
 } from '@/components/ui/dialog'
-import { Input } from '@/components/ui/input'
-import { Label } from '@/components/ui/label'
 import {
   Table,
   TableBody,
@@ -21,10 +19,23 @@ import {
   TableRow
 } from '@/components/ui/table'
 import { Pencil, Trash } from 'lucide-vue-next'
+import { defineProps } from 'vue'
+
+type User = {
+  name: string
+  age: number
+  company: string
+  status: string
+  id: number
+}
+
+const props = defineProps({
+  users: Array as () => User[]
+})
 </script>
 
 <template>
-  <Table>
+  <Table :users="users">
     <TableCaption>A list of users.</TableCaption>
     <TableHeader>
       <TableRow>
@@ -36,11 +47,11 @@ import { Pencil, Trash } from 'lucide-vue-next'
       </TableRow>
     </TableHeader>
     <TableBody>
-      <TableRow>
-        <TableCell> Aryel Cordeiro Ramos Gonçalves</TableCell>
-        <TableCell>21 years</TableCell>
-        <TableCell>Instituto do câncer</TableCell>
-        <TableCell> Active </TableCell>
+      <TableRow v-for="user in props.users" :key="user.name">
+        <TableCell>{{ user.name }}</TableCell>
+        <TableCell>{{ user.age }}</TableCell>
+        <TableCell>{{ user.company }}</TableCell>
+        <TableCell>{{ user.status }}</TableCell>
         <TableCell class="w-fit flex gap-3 opacity-60">
           <Dialog>
             <DialogTrigger>
@@ -49,33 +60,13 @@ import { Pencil, Trash } from 'lucide-vue-next'
               </Button>
             </DialogTrigger>
             <DialogContent>
+              <UserForm />
               <DialogHeader>
                 <DialogTitle>Edit User</DialogTitle>
                 <DialogDescription>
                   Edit the user's information. Click save when you're done.
                 </DialogDescription>
               </DialogHeader>
-              <div class="grid gap-4 py-4">
-                <div class="grid grid-cols-4 items-center gap-4">
-                  <Label for="name" class="text-right"> Name </Label>
-                  <Input id="name" class="col-span-3" />
-                </div>
-                <div class="grid grid-cols-4 items-center gap-4">
-                  <Label for="Age" class="text-right"> Age </Label>
-                  <Input id="age" class="col-span-3" type="number" />
-                </div>
-                <div class="grid grid-cols-4 items-center gap-4">
-                  <Label for="Company" class="text-right"> Company </Label>
-                  <Input id="company" class="col-span-3" type="text" />
-                </div>
-                <div class="grid grid-cols-4 items-center gap-4">
-                  <Label for="Status" class="text-right"> Status </Label>
-                  <Input id="status" class="col-span-3" type="text" />
-                </div>
-              </div>
-              <DialogFooter>
-                <Button type="submit"> Save changes </Button>
-              </DialogFooter>
             </DialogContent>
           </Dialog>
           <Button variant="secondary" @click="() => console.log('clicou')">
