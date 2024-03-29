@@ -1,9 +1,10 @@
 <script setup lang="ts">
-import HeaderActions from '@/components/HeaderActions.vue'
-import Table from '@/components/TableComponent.vue'
-import { useFetch } from '@/hooks/useFetch'
+import HeaderActions from '@/components/HeaderActions.vue';
+import Table from '@/components/TableComponent.vue';
+import { useFetch } from '@/hooks/useFetch';
+import { watch } from 'vue';
 
-import { ref } from 'vue'
+import { ref } from 'vue';
 
 type User = {
   name: string
@@ -15,10 +16,16 @@ type User = {
 
 const users = ref([] as User[])
 
-function getUsers() {
-  const { response } = useFetch('https://jsonplaceholder.typicode.com/users')
+async function getUsers() {
+  const { response } = await useFetch('https://jsonplaceholder.typicode.com/users')
 
-  console.log(response)
+  watch(response, (newValue: User[]) => {
+    newValue.forEach((e: User) => {
+      users.value.push(e)
+    })
+  })
+
+  console.log(users.value, 'userrrrs')
 }
 </script>
 <template>

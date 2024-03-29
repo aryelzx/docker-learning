@@ -1,8 +1,8 @@
 import axios, { type AxiosInstance } from 'axios'
-import { ref } from 'vue'
+import { ref, watch } from 'vue'
 
 export const useFetch = (url: string, config?: AxiosInstance) => {
-  const response = ref<any>(null)
+  const response = ref<[]>([])
   const error = ref<any>(null)
   const loading = ref<boolean>(false)
 
@@ -20,8 +20,11 @@ export const useFetch = (url: string, config?: AxiosInstance) => {
       loading.value = false
     }
   }
+
+  watch(response, (newValue) => {
+    newValue.forEach(e => console.log(e, '***'))
+  })
   fetch()
-  console.log(response.value)
 
   return { response, error, loading, fetch }
 }
